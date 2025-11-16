@@ -1,0 +1,33 @@
+; Top Design: "MyLibrary_lib:SA_LCLowpassDT1_anli3:schematic"
+; Netlisted using Hierarchy Policy: "Standard"
+
+Options ResourceUsage=yes UseNutmegFormat=no EnableOptim=no TopDesignName="MyLibrary_lib:SA_LCLowpassDT1_anli3:schematic" DcopOutputNodeVoltages=yes DcopOutputPinCurrents=yes DcopOutputAllSweepPoints=no DcopOutputDcopType=0
+; Library Name: MyLibrary_lib
+; Cell Name: DA_LCLowpassDT1_anli3
+; View Name: schematic
+define DA_LCLowpassDT1_anli3 ( P1  P2 ) 
+parameters  Fp=1 GHz  Fs=2 GHz  Ap=3 dB  As=20 dB  N=0  ResponseType=1  MinLorC=4  Rg=50 Ohm  Rl=50 Ohm  MaxRealizations=25 
+L:L1  P1 N__1 L=1.819322 nH R=1e-12 Ohm Noise=yes  
+C:C1  N__1 0 C=1.455458 pF 
+L:L2  N__1 P2 L=1.819322 nH R=1e-12 Ohm Noise=yes  
+end DA_LCLowpassDT1_anli3
+
+aele Fp=4 GHz;Fs=8 GHz;Ap=2 dB;As=15 dB;N=3;ResponseType=1;MinLorC=3;Rg=50 Ohm;Rl=50 Ohm;MaxRealizations=25;
+DA_LCLowpassDT1_anli3:DA_LCLowpassDT1  N__0 N__1 Fp=4 GHz Fs=8 GHz Ap=2 dB As=15 dB N=3 ResponseType=1 MinLorC=3 Rg=50 Ohm Rl=50 Ohm MaxRealizations=25 
+Port:Term1  N__0 0 Num=1 Z=50 Ohm Noise=yes 
+Port:Term2  N__1 0 Num=2 Z=50 Ohm Noise=yes 
+S_Param:SP1 CalcS=yes CalcY=no CalcZ=no CalcGroupDelay=yes GroupDelayAperture=1e-4 \
+FreqConversion=no FreqConversionPort=1 StatusLevel=2 CalcNoise=no SortNoise=0 BandwidthForNoise=1.0 Hz DevOpPtLevel=0 \
+SweepVar="freq" SweepPlan="SP1_stim" OutputPlan="SP1_Output" 
+
+SweepPlan: SP1_stim Start=0 Hz Stop=10 GHz Step=20 MHz 
+
+OutputPlan:SP1_Output \
+      Type="Output" \
+      UseEquationNestLevel=yes \
+      EquationNestLevel=2 \
+      UseSavedEquationNestLevel=yes \
+      SavedEquationNestLevel=2
+
+#load "python","LinearCollapse"
+Component Module="LinearCollapse" Type="ModelExtractor" NetworkRepresentation=2
